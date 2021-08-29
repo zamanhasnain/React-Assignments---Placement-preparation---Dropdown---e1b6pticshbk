@@ -1,5 +1,6 @@
-import React, { useState,useReducer } from "react";
+import React, { useState} from "react";
 import "./../styles/App.css";
+
 
 
 const states = [{
@@ -138,12 +139,56 @@ const states = [{
 }];
 
 
+//onsole.log(states.map(a => a.name));
+
 function App() 
 {
+	const [state,setState]=useState(states[0].name);
+
+	const stateData=states.filter(b=>b.name==state);
+
+	
+	const citysData=stateData[0].city;
+	console.log(citysData[0].name);
+	const [city,setCity]=useState(citysData[0].name);
+	
+	
+	console.log(citysData.filter(b=>b.name==city));
+
+	
+	 const cityData=citysData.filter(b=>b.name==city);
+	 const landmarksData=cityData[0].landmarks;
+	
+
 	// Do not alter/remove main div
 	return (
-	<div id="main">
+	<div id="main" className="box">
+		<div className="form-group">
+			
+			<label className="form-label">State</label>
+			<select id="state" onChange={(event)=>(setState(event.target.value))}>
+				{states.map(state=>
+                <option key={state.name} value={state.name}>{state.name}</option>
+				)}
+			</select>
+		</div>
 		
+		<div className="form-group">
+			<label className="form-label">City</label>
+			<select id="city" onChange={(event)=>setCity(event.target.value) }>
+                 {citysData.map(data=>
+					<option key={data.name} value={data.name}>{data.name}</option>
+					)}
+			</select>
+		</div>
+		<div className="form-group">
+			<label className="form-label">landmark</label>
+			<select id="landmark">
+			{landmarksData.map(data=>
+					<option key={data.name} value={data.name}>{data.name}</option>
+					)}
+			</select>
+		</div>
 	</div>
 	);
 }
