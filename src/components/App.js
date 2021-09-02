@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState,useEffect} from "react";
 import "./../styles/App.css";
 
 
@@ -139,55 +139,98 @@ const states = [{
 }];
 
 
-//onsole.log(states.map(a => a.name));
+//console.log(states.map(a => a.name));
+
 
 function App() 
+
 {
 	const [state,setState]=useState(states[0].name);
-
-	const stateData=states.filter(b=>b.name==state);
-
 	
-	const citysData=stateData[0].city;
-	console.log(citysData[0].name);
+	const [landmark,setLandmark]=useState(0);
+
+	const stateData=states.filter(data=>data.name==state);
+	console.log(stateData);
+    const citysData=stateData[0].city;
+    console.log(citysData[0].name);
 	const [city,setCity]=useState(citysData[0].name);
-	
-	
-	console.log(citysData.filter(b=>b.name==city));
+	const cityData=citysData.filter(data=>data.name==city);
+	//console.log(cityData);
+	//const landmarksData=cityData[0].landmarks;
 
-	
-	 const cityData=citysData.filter(b=>b.name==city);
-	 const landmarksData=cityData[0].landmarks;
-	
+	useEffect(() => {
+		const stateData1=states.filter(data=>data.name===state);
+		const citysData1=stateData1[0].city;
+		const cityData1=citysData1.filter(data=>data.name===city);
+	console.log(cityData1);
+
+	  }, [state]);
+
+
+    
+
+    
+  function changeState(event){
+  setState(event.target.value);
+ 
+  
+  }
+  
+	 
 
 	// Do not alter/remove main div
 	return (
-	<div id="main" className="box">
-		<div className="form-group">
+	<div id="main" className="container mt-3">
+		
+		<div className="row">	
+		<div className="col-md-5">
+		
 			
 			<label className="form-label">State</label>
-			<select id="state" onChange={(event)=>(setState(event.target.value))}>
+			<select id="state" className="form-select" onChange={changeState}>
 				{states.map(state=>
                 <option key={state.name} value={state.name}>{state.name}</option>
 				)}
 			</select>
+		
+		
+		
+			<label className="form-label mt-3">City</label>
+			<select id="city" className="form-select">
+				
+			      {citysData.map(data=>
+					<option key={data.name} value={data.name}>{data.name}</option>
+					)}
+			</select>
+		
+		
+			<label className="form-label mt-3">landmark</label>
+			<select id="landmark" className="form-select">
+			{/* {landmarksData.map(data=>
+					<option key={data.name} value={data.name}>{data.name}</option>
+					)} */}
+			</select>
+	
+		</div>
+		<div className="col-md-7">
+		<div className="card mt-4">
+			<div className="card-header">{stateData[0].name}</div>
+		<div className="card-body">
+		<p>
+		{stateData[0].description}	
+		</p>
+			</div>
+			</div>
+			<div className="card mt-4">
+			<div className="card-header">{citysData[0].name}</div>
+		<div className="card-body">
+		<p>
+		{citysData[0].description}	
+		</p>
+			</div>
+			</div>
 		</div>
 		
-		<div className="form-group">
-			<label className="form-label">City</label>
-			<select id="city" onChange={(event)=>setCity(event.target.value) }>
-                 {citysData.map(data=>
-					<option key={data.name} value={data.name}>{data.name}</option>
-					)}
-			</select>
-		</div>
-		<div className="form-group">
-			<label className="form-label">landmark</label>
-			<select id="landmark">
-			{landmarksData.map(data=>
-					<option key={data.name} value={data.name}>{data.name}</option>
-					)}
-			</select>
 		</div>
 	</div>
 	);
