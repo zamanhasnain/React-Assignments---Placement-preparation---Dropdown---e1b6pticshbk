@@ -1,9 +1,7 @@
 import React, { useState,useEffect} from "react";
 import "./../styles/App.css";
 
-
-
-const states = [{
+const States = [{
 	name : "Madhya Pradesh",
 	description:"Madhya Pradesh, a large state in central India, retains landmarks from eras throughout Indian history.",
 	city :[{
@@ -138,45 +136,66 @@ const states = [{
 	}]
 }];
 
-
-//console.log(states.map(a => a.name));
-
-
-function App() 
-
-{
-	const [state,setState]=useState(states[0].name);
+function App() {
+	const [state,setState]=useState(States[0].name);
 	
-	const [landmark,setLandmark]=useState(0);
+	
 
-	const stateData=states.filter(data=>data.name==state);
-	console.log(stateData);
-    const citysData=stateData[0].city;
-    console.log(citysData[0].name);
-	const [city,setCity]=useState(citysData[0].name);
-	const cityData=citysData.filter(data=>data.name==city);
-	//console.log(cityData);
-	//const landmarksData=cityData[0].landmarks;
-
-	useEffect(() => {
-		const stateData1=states.filter(data=>data.name===state);
-		const citysData1=stateData1[0].city;
-		const cityData1=citysData1.filter(data=>data.name===city);
-	console.log(cityData1);
-
-	  }, [state]);
+	const [citys,setCitys]=useState([]);
+	const [city,setCity]=useState('');
+	const [landmarks,setLandmarks]=useState([]);
+	const [landmark,setLandmark]=useState('');
 
 
-    
+	useEffect(
+		() => {			
+	//console.log(state)
+	const stateData=States.filter(data=>data.name===state);
+	//console.log(stateData[0].city);
+	setCitys(stateData[0].city);
+	//console.log(stateData[0].city[0].name);
+	setCity(stateData[0].city[0].name);	
+	
+	const cityData=stateData[0].city[0];
+			//console.log(cityData)
+			// console.log(cityData[0].landmarks)
+			 setLandmarks(cityData.landmarks)
+			setLandmark(cityData.landmarks[0].name);
+			},
+			
+		[state],
+	  );
 
-    
-  function changeState(event){
-  setState(event.target.value);
- 
-  
-  }
-  
-	 
+	  async function getData() {
+				
+		const stateData= await States.filter(data=>data.name===state);
+
+	const cityData= await stateData[0].city.filter(data=>data.name===city);
+	setLandmarks(cityData[0].landmarks)
+	
+	setLandmark(cityData[0].landmarks[0].name);
+		// store the data into our books variable
+	  }
+	
+
+	  useEffect(
+		() => {
+			// console.log(state);
+			// console.log(city);
+			// console.log(citys);
+           
+			getData() 
+		},
+		[city],
+	  );
+	//   useEffect(
+	// 	() => {
+			
+		
+	// 	},
+	// 	[],
+	//    );
+
 
 	// Do not alter/remove main div
 	return (
@@ -187,47 +206,37 @@ function App()
 		
 			
 			<label className="form-label">State</label>
-			<select id="state" className="form-select" onChange={changeState}>
-				{states.map(state=>
-                <option key={state.name} value={state.name}>{state.name}</option>
+			<select id="state" className="form-select" onChange={(ev) =>  setState(ev.target.value)}>
+				{States.map(data=>
+                <option key={data.name} value={data.name} >{data.name}</option>
 				)}
 			</select>
 		
 		
 		
 			<label className="form-label mt-3">City</label>
-			<select id="city" className="form-select">
+			<select id="city" className="form-select" onChange={(event)=>setCity(event.target.value)}>
 				
-			      {citysData.map(data=>
-					<option key={data.name} value={data.name}>{data.name}</option>
+			      {citys.map(data=>
+					<option key={data.name} value={data.name} >{data.name}</option>
 					)}
 			</select>
 		
 		
 			<label className="form-label mt-3">landmark</label>
-			<select id="landmark" className="form-select">
-			{/* {landmarksData.map(data=>
-					<option key={data.name} value={data.name}>{data.name}</option>
-					)} */}
+			<select id="landmark" className="form-select" onChange={(event)=>setLandmark(event.target.value)}>
+			{landmarks.map(data=>
+					<option key={data.name} value={data.name} selected={data.name===landmark}>{data.name}</option>
+					)}
 			</select>
 	
 		</div>
 		<div className="col-md-7">
 		<div className="card mt-4">
-			<div className="card-header">{stateData[0].name}</div>
-		<div className="card-body">
-		<p>
-		{stateData[0].description}	
-		</p>
-			</div>
+		
 			</div>
 			<div className="card mt-4">
-			<div className="card-header">{citysData[0].name}</div>
-		<div className="card-body">
-		<p>
-		{citysData[0].description}	
-		</p>
-			</div>
+		
 			</div>
 		</div>
 		
