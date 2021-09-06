@@ -170,17 +170,17 @@ function App() {
 		</div>
 		<div className="col-md-7">
 		<div className="card mt-4">
-		<div className="card-header">{States[state].name}</div>
-		<div className="card-body">{States[state].description}</div>
+		<div className="card-header" id="state-title">{States[state].name}</div>
+		<div className="card-body" id="state-description">{States[state].description}</div>
 			</div>
 			<div className="card mt-4">
-			<div className="card-header">{States[state].city[city].name}</div>
-		<div className="card-body">{States[state].city[city].description}</div>
+			<div className="card-header" id="city-title">{States[state].city[city].name}</div>
+		<div className="card-body" id="city-description">{States[state].city[city].description}</div>
 			</div>
 
 			<div className="card mt-4">
-			<div className="card-header">{States[state].city[city].landmarks[town].name}</div>
-		<div className="card-body">{States[state].city[city].landmarks[town].description}</div>
+			<div className="card-header" id="landmark-title">{States[state].city[city].landmarks[town].name}</div>
+		<div className="card-body" id="landmark-description">{States[state].city[city].landmarks[town].description}</div>
 			</div>
 		</div>		
 		</div>
