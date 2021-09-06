@@ -1,9 +1,7 @@
 import React, { useState} from "react";
 import "./../styles/App.css";
 
-
-
-const states = [{
+const States = [{
 	name : "Madhya Pradesh",
 	description:"Madhya Pradesh, a large state in central India, retains landmarks from eras throughout Indian history.",
 	city :[{
@@ -138,60 +136,56 @@ const states = [{
 	}]
 }];
 
+function App() {
+	const [state,setState] = useState(0);
+	const [city,setCity] = useState(state);
+	const [town,setTown] = useState(city)
 
-//onsole.log(states.map(a => a.name));
-
-function App() 
-{
-	const [state,setState]=useState(states[0].name);
-
-	const stateData=states.filter(b=>b.name==state);
-
-	
-	const citysData=stateData[0].city;
-	console.log(citysData[0].name);
-	const [city,setCity]=useState(citysData[0].name);
-	
-	
-	console.log(citysData.filter(b=>b.name==city));
-
-	
-	 const cityData=citysData.filter(b=>b.name==city);
-	 const landmarksData=cityData[0].landmarks;
-	
-
-	// Do not alter/remove main div
 	return (
-	<div id="main" className="box">
-		<div className="form-group">
-			
-			<label className="form-label">State</label>
-			<select id="state" onChange={(event)=>(setState(event.target.value))}>
-				{states.map(state=>
-                <option key={state.name} value={state.name}>{state.name}</option>
-				)}
-			</select>
-		</div>
+	<div id="main" className="container mt-3">
 		
-		<div className="form-group">
-			<label className="form-label">City</label>
-			<select id="city" onChange={(event)=>setCity(event.target.value) }>
-                 {citysData.map(data=>
-					<option key={data.name} value={data.name}>{data.name}</option>
-					)}
+		<div className="row">	
+		<div className="col-md-5">
+			<label className="form-label">State</label>
+			<select id="state" className="form-select" onChange={(ev) =>  setState(ev.target.value)}>
+				{States.map((item,index)=>(
+					<option key={`state${index+1}`} value={index}>{item.name}</option>
+				))}
 			</select>
+		
+			<label className="form-label mt-3">City</label>
+			<select id="city" className="form-select" onChange={(event)=>setCity(event.target.value)}>
+			{States[state].city.map((item,index)=>(
+				<option key={`city${index+1}`} value={index}>{item.name}</option>
+			))}
+			</select>
+		
+			<label className="form-label mt-3">landmark</label>
+			<select id="landmark" className="form-select" onChange={(event)=>setTown(event.target.value)}>
+			{States[state].city[city].landmarks.map((item,index)=>(
+				<option key={`landmark${index+1}`} value={index}>{item.name}</option>
+			))}
+			</select>
+	
 		</div>
-		<div className="form-group">
-			<label className="form-label">landmark</label>
-			<select id="landmark">
-			{landmarksData.map(data=>
-					<option key={data.name} value={data.name}>{data.name}</option>
-					)}
-			</select>
+		<div className="col-md-7">
+		<div className="card mt-4">
+		<div className="card-header">{States[state].name}</div>
+		<div className="card-body">{States[state].description}</div>
+			</div>
+			<div className="card mt-4">
+			<div className="card-header">{States[state].city[city].name}</div>
+		<div className="card-body">{States[state].city[city].description}</div>
+			</div>
+
+			<div className="card mt-4">
+			<div className="card-header">{States[state].city[city].landmarks[town].name}</div>
+		<div className="card-body">{States[state].city[city].landmarks[town].description}</div>
+			</div>
+		</div>		
 		</div>
 	</div>
 	);
 }
-
 
 export default App;
